@@ -1,0 +1,7 @@
+# IDE files
+.idea
+
+*.log
+.npm
+node_modules
+config/runtime.yaml

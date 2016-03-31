@@ -1,0 +1,127 @@
+swagger: "2.0"
+
+info:
+  title: Configuration Management API
+  description: API for handling the configuration parameters.
+  version: 0.0.1
+host: localhost:3000
+basePath: /api
+schemes:
+  - http
+consumes:   
+  - application/json
+produces:
+  - application/json
+paths:
+  /parameters:
+    x-swagger-router-controller: configuration
+    get:
+      operationId: GetParams
+      description: Returns a list of configuration parameters.
+      responses:
+        default:
+          description: Unexpected Error
+          schema:
+            $ref: "#/definitions/Error"
+        "200":
+          description: List of parameters
+          schema:
+            $ref: "#/definitions/ParameterList"
+
+    post:
+      operationId: CreateParam
+      description: Add configuration parameter.
+      parameters:
+        - $ref: "#/parameters/Parameter"
+      responses:
+        default:
+          description: Unexpected Error
+          schema:
+            $ref: "#/definitions/Error"
+        "201":
+          description: Parameter Added
+
+    put:
+      operationId: UpdateParam
+      description: Updates configuration parameter.
+      parameters:
+        - $ref: "#/parameters/Parameter"
+      responses:
+        default:
+          description: Unexpected Error
+          schema:
+            $ref: "#/definitions/Error"
+        "202":
+          description: Parameter Updated
+
+  /parameters/{param}:
+    x-swagger-router-controller: configuration
+    get:
+      operationId: GetParam
+      description: Get the single configuration parameter.
+      parameters:
+        - $ref: "#/parameters/PathParameter"
+      responses:
+        default:
+          description: Unexpected Error
+          schema:
+            $ref: "#/definitions/Error"
+        "200":
+          description: Single Parameter
+          schema:
+            $ref: "#/definitions/Parameter"
+
+    delete:
+      operationId: DeleteParam
+      description: Deletes the requested configuration parameter.
+      parameters:
+        - $ref: "#/parameters/PathParameter"
+      responses:
+        default:
+          description: Unexpected Error
+          schema:
+            $ref: "#/definitions/Error"
+        "200":
+          description: Deleted
+
+definitions:
+  Error:
+    type: object
+    required:
+      - message
+      - code
+    properties:
+      message:
+        type: string
+      code:
+        type: string
+
+  Parameter:
+    type: object
+    properties:
+      key:
+        type: string
+      value:
+        type: string
+    required:
+      - key
+      - value
+
+  ParameterList:
+    type: object
+
+parameters:
+  Parameter:
+    name: param
+    in: body
+    description: Configuration parameter
+    required: true
+    schema:
+      $ref: "#/definitions/Parameter"
+
+  PathParameter:
+    name: param
+    in: path
+    description: Name of the parameter
+    required: true
+    type: string
