@@ -71,3 +71,53 @@ Controller.GetParams = (req, res) => {
     })
   ;
 }
+
+Controller.GetParam = (req,res) => {
+  let key = req.swagger.params.param.value;
+    s3
+    .download()
+    .then(function(configuration) {
+      if (configuration.hasOwnProperty(key)) {
+        res.status(200).json({"key": key,"value": configuration[key]});
+      }
+      else {
+        res.status(400).json({"code": "400", "message": "The parameter you requested doesn't exists"});
+      }
+
+    })
+    .catch(function(error) {
+      res.status(403).json({"code": error.code, "message": error.message});
+    })
+  ;
+}
+
+Controller.UpdateParam = (req,res) => {
+  let key = req.body.key;
+  let value = req.body.value;
+
+  if (!key || key.trim().length == 0 || !value || value.trim().length == 0) {
+    return res.status(400).json({"code": "400", "message": "Invalid Parameter"});
+  }
+
+  s3
+    .download()
+    .then(function(configuration) {
+      if (!configuration.hasOwnProperty(key)) {
+        return res.status(400).json({"code": "400", "message": "The parameter you requested doesn't exists"});
+      } else {
+        configuration[key] = value;
+      }
+
+      s3
+        .upload(configuration)
+        .then(function(location) {
+          console.log("Uploaded on: %s", location);
+          res.status(202).json();
+        })
+      ;
+    })
+    .catch(function(error) {
+      res.status(403).json({"code": error.code, "message": error.message});
+    })
+  ;
+}
