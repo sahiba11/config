@@ -29,6 +29,9 @@ Controller.CreateParam = (req, res) => {
         })
       ;
     })
+    .catch(function(error) {
+      res.status(403).json({"code": error.code, "message": error.message});
+    })
   ;
 }
 
@@ -51,6 +54,9 @@ Controller.DeleteParam = (req, res) => {
         res.status(400).json({"code": "400", "message": "The parameter you requested doesn't exists"});
       }
     })
+    .catch(function(error) {
+      res.status(403).json({"code": error.code, "message": error.message});
+    })
   ;
 }
 
@@ -59,5 +65,9 @@ Controller.GetParams = (req, res) => {
     .download()
     .then(function(content) {
       res.json(content);
-    });
+    })
+    .catch(function(error) {
+      res.status(403).json({"code": error.code, "message": error.message});
+    })
+  ;
 }

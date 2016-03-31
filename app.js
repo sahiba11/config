@@ -10,7 +10,8 @@ app.use(bodyParser.json());
 
 global.config = {
   appRoot: __dirname,
-  s3bucket: 'testing.configuration'
+  s3bucket: 'testing.configuration',
+  s3Region: 'eu-west-1'
 };
 
 SwaggerExpress.create(config, function(err, swaggerExpress) {

@@ -1,9 +1,10 @@
 var aws = require('aws-sdk');
-var s3 = new aws.S3();
-
 var Promise = require('promise');
 
-var Utils = {};
+aws.config.update({region: config.s3Region});
+
+var s3 = new aws.S3();
+var Utils = module.exports = {};
 
 Utils.upload = function(data) {
   return new Promise(function(success, reject) {
@@ -43,5 +44,3 @@ Utils.download = function() {
     ;
   });
 };
-
-module.exports = Utils;
