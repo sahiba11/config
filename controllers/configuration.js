@@ -3,11 +3,13 @@
 var s3 = require('./s3');
 var uuid = require('node-uuid');
 
-exports.CreateParameter = function(args, res, next) {
+var Controller = module.exports = {};
+
+Controller.CreateParameter = (req, res) => {
   var id = uuid.v4();
-  var key = args.body.key;
-  var value = args.body.value;
-  var domain = args.body.domain;
+  var key = req.body.key;
+  var value = req.body.value;
+  var domain = req.body.domain;
 
   if (key.trim().length == 0 || value.trim().length == 0 || domain.trim().length == 0) {
     return res.status(400).json("Invalid Parameter");
@@ -27,14 +29,14 @@ exports.CreateParameter = function(args, res, next) {
 
       if(configExists) {
         return res.status(400).json("Configuration already exists");
-      } else {
-        configuration[id] = {
-          "domain": domain,
-          "key": key,
-          "value": value
-        }
+      } 
+        
+      configuration[id] = {
+        "domain": domain,
+        "key": key,
+        "value": value
       }
-
+      
       s3
         .upload(configuration)
         .then(function(location) {
@@ -48,9 +50,9 @@ exports.CreateParameter = function(args, res, next) {
   ;    
 }
 
-exports.DeleteParameter = function(args, res, next) {
+Controller.DeleteParameter = (req, res) => {
 
-  var id = args.parameter_id.value
+  var id = req.swagger.params.parameter_id.value
 
   s3
     .download()
@@ -75,9 +77,9 @@ exports.DeleteParameter = function(args, res, next) {
   ;
 }
 
-exports.GetParameter = function(args, res, next) {
+Controller.GetParameter = (req, res) => {
 
-  var id = args.parameter_id.value;
+  var id = req.swagger.params.parameter_id.value;
 
   s3
     .download()
@@ -96,7 +98,7 @@ exports.GetParameter = function(args, res, next) {
   ;
 }   
 
-exports.GetParameters = function(args, res, next) {
+Controller.GetParameters = (req, res) => {
 
   s3
     .download()
@@ -109,11 +111,11 @@ exports.GetParameters = function(args, res, next) {
   ;
 }
 
-exports.UpdateParameter = function(args, res, next) {
-  var id = args.swagger.params.parameter_id.value;
-  var key = args.body.key;
-  var value = args.body.value;
-  var domain = args.body.domain; 
+Controller.UpdateParameter = (req, res) => {
+  var id = req.swagger.params.parameter_id.value;
+  var key = req.body.key;
+  var value = req.body.value;
+  var domain = req.body.domain; 
 
   if (key.trim().length == 0 || value.trim().length == 0 || domain.trim().length == 0) {
     return res.status(400).json("Invalid Parameter");
@@ -124,14 +126,14 @@ exports.UpdateParameter = function(args, res, next) {
     .then(function(configuration) {
       if (!configuration.hasOwnProperty(id)) {
         return res.status(404).json("id you requested does not exist");
-      } else {
-        configuration[id] = {
-          "domain": domain,
-          "key": key,
-          "value": value
-        }
       }
 
+      configuration[id] = {
+        "domain": domain,
+        "key": key,
+        "value": value
+      }
+      
       s3
         .upload(configuration)
         .then(function(location) {
