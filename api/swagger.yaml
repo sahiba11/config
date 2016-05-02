@@ -1,0 +1,135 @@
+swagger: "2.0"
+info:
+  description: "API for handling the configuration parameters."
+  version: "0.0.1"
+  title: "Configuration Management API"
+basePath: "/api"
+schemes:
+- "http"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /parameters:
+    get:
+      description: "Returns a list of configuration parameters."
+      operationId: "GetParameters"
+      responses:
+        200:
+          description: "A list of parameters."
+          schema:
+            $ref: "#/definitions/ParameterList"
+        default:
+          description: "Unexpected Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "configuration"
+    post:
+      description: "Add configuration parameter."
+      operationId: "CreateParameter"
+      parameters:
+      - $ref: "#/parameters/parameter"
+      responses:
+        201:
+          description: "A parameter."
+          schema:
+            $ref: "#/definitions/Parameter"
+        default:
+          description: "Unexpected Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "configuration"
+  /parameters/{parameter_id}:
+    get:
+      description: "Get the requested configuration parameter."
+      operationId: "GetParameter"
+      parameters:
+      - $ref: "#/parameters/parameter_id"
+      responses:
+        200:
+          description: "A parameter."
+          schema:
+            $ref: "#/definitions/Parameter"
+        404:
+          description: "Not Found."
+        default:
+          description: "Unexpected Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "configuration"
+    put:
+      description: "Updates the requested configuration parameter."
+      operationId: "UpdateParameter"
+      parameters:
+      - $ref: "#/parameters/parameter_id"
+      - $ref: "#/parameters/parameter"
+      responses:
+        200:
+          description: "A parameter."
+          schema:
+            $ref: "#/definitions/Parameter"
+        404:
+          description: "Not Found."
+        default:
+          description: "Unexpected Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "configuration"
+    delete:
+      description: "Deletes the requested configuration parameter."
+      operationId: "DeleteParameter"
+      parameters:
+      - $ref: "#/parameters/parameter_id"
+      responses:
+        200:
+          description: "Deleted"
+        404:
+          description: "Not Found."
+        default:
+          description: "Unexpected Error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "configuration"
+definitions:
+  Error:
+    type: "object"
+    required:
+    - "message"
+    properties:
+      message:
+        type: "string"
+  Parameter:
+    type: "object"
+    required:
+    - "domain"
+    - "key"
+    - "value"
+    properties:
+      key:
+        type: "string"
+      value:
+        type: "string"
+      domain:
+        type: "string"
+      id:
+        type: "string"
+  ParameterList:
+    type: "array"
+    items:
+      $ref: "#/definitions/Parameter"
+parameters:
+  parameter_id:
+    name: "parameter_id"
+    in: "path"
+    description: "unique identifier of parameter"
+    required: true
+    type: "string"
+  parameter:
+    in: "body"
+    name: "body"
+    description: "parameter"
+    required: true
+    schema:
+      $ref: "#/definitions/Parameter"
+
