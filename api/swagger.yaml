@@ -29,12 +29,7 @@ paths:
       description: "Add configuration parameter."
       operationId: "CreateParameter"
       parameters:
-      - in: "body"
-        name: "body"
-        description: "parameter"
-        required: true
-        schema:
-          $ref: "#/definitions/Parameter"
+      - $ref: "#/parameters/parameter"
       responses:
         201:
           description: "A parameter."
@@ -68,12 +63,7 @@ paths:
       operationId: "UpdateParameter"
       parameters:
       - $ref: "#/parameters/parameter_id"
-      - in: "body"
-        name: "body"
-        description: "parameter"
-        required: true
-        schema:
-          $ref: "#/definitions/Parameter"
+      - $ref: "#/parameters/parameter"
       responses:
         200:
           description: "A parameter."
@@ -135,3 +125,11 @@ parameters:
     description: "unique identifier of parameter"
     required: true
     type: "string"
+  parameter:
+    in: "body"
+    name: "body"
+    description: "parameter"
+    required: true
+    schema:
+      $ref: "#/definitions/Parameter"
+
