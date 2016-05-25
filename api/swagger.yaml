@@ -10,9 +10,15 @@ consumes:
 - "application/json"
 produces:
 - "application/json"
+
+tags:
+- name: config
+  description: Configuration
+
 paths:
   /parameters:
     get:
+      tags: [config]
       description: "Returns a list of configuration parameters."
       operationId: "GetParameters"
       responses:
@@ -26,6 +32,7 @@ paths:
             $ref: "#/definitions/Error"
       x-swagger-router-controller: "configuration"
     post:
+      tags: [config]
       description: "Add configuration parameter."
       operationId: "CreateParameter"
       parameters:
@@ -42,6 +49,7 @@ paths:
       x-swagger-router-controller: "configuration"
   /parameters/{parameter_id}:
     get:
+      tags: [config]
       description: "Get the requested configuration parameter."
       operationId: "GetParameter"
       parameters:
@@ -59,6 +67,7 @@ paths:
             $ref: "#/definitions/Error"
       x-swagger-router-controller: "configuration"
     put:
+      tags: [config]
       description: "Updates the requested configuration parameter."
       operationId: "UpdateParameter"
       parameters:
@@ -77,6 +86,7 @@ paths:
             $ref: "#/definitions/Error"
       x-swagger-router-controller: "configuration"
     delete:
+      tags: [config]
       description: "Deletes the requested configuration parameter."
       operationId: "DeleteParameter"
       parameters:

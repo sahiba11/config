@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "API for handling the configuration parameters.",
   "main": "index.js",
+  "bin": {
+    "command": "command.js"
+    },
   "keywords": [
     "swagger"
   ],
@@ -10,10 +13,13 @@
   "private": true,
   "dependencies": {
     "aws-sdk": "^2.3.4",
+    "commander": "^2.9.0",
     "express": "^4.13.4",
     "js-yaml": "^3.6.0",
     "node-uuid": "^1.4.7",
     "promise": "^7.1.1",
+    "swagger-client": "^2.1.14",
+    "swagger-commander": "^0.3.0",
     "swagger-tools": "^0.9.16"
   }
 }
